@@ -1,0 +1,82 @@
+trainer: sketch_transformer_vae
+# Training Setting
+batch_size: 32
+num_iterations: 5000000
+num_epoch: 200
+learning_rate: 0.0001
+gpu_ids: [1]
+task_types: ['maskgmm']
+mask_task_type: 'task'
+train_mode: 'generation'
+get_type: 'single'
+load_pretrained: 'pretrained' #[scratch,continue pretrained]
+which_pretrained: ['enc_net_from_mask', 'dec_net_from_mask'] #enc_opt
+restore_checkpoint_path: '/home/lhy/Project/LinGANs/model_logs/sketch_transformer/201910211358_sketch_albert_data_345x100000_struct_6_8_256_mask/latest_ckpt.pth.tar'
+#'/home/lhy/Project/LinGANs/model_logs/sketch_transformer_vae/201910102345_sketch_transformer_cvae_ss_M20/latest_ckpt.pth.tar'
+
+# Dataset setting
+dataset: 'quickdraw_memmap'
+num_train_samples: 20000000
+num_val_samples: 10
+num_display_samples: 5
+shuffle_val: True
+loader_num_workers: 4
+sum_path: '/home/lhy/datasets/QuickDraw/memmap_sum.txt'
+offset_path: '/home/lhy/datasets/QuickDraw/offsets.npz'
+cls_limit_path: '/home/lhy/datasets/QuickDraw/sketchrnn_generation.txt'
+mode: 'train'
+max_length: 100
+max_size: [128,128]
+type_size: 3
+mask_prob: 1 # not mask is 1
+limit: 1000
+sketch_embed_type: 'linear'
+embed_pool_type: 'sum'
+stroke_type: 'stroke-5'
+max_cls_cache: 20
+normalization_type: 'var_scale'
+each_max_samples: 2000
+each_val_samples: 10
+
+# Output and Save options
+print_every:  100
+log_dir: 'sketch_transformer_vae_M20' # long box only
+checkpoint_every: 5000
+save_model_every: 20000
+
+# Transformer settings
+encoder_type: 'Ori'
+enc_layers_setting: [[8, 256, 1024],[8, 256, 1024],[8, 256, 1024],[8, 256, 1024],[8, 256, 1024],[8, 256, 1024]]
+dec_layers_setting: [[8, 256, 1024],[8, 256, 1024],[8, 256, 1024],[8, 256, 1024],[8, 256, 1024],[8, 256, 1024]]
+position_type: 'learn'
+segment_type: 'none'
+output_attentions: False
+output_all_states: False
+keep_multihead_output: False
+conditional: False
+input_dim: 5
+cls_dim: 100
+hidden_dim: 128
+latent_dim: 256
+M: 20
+embed_layers_setting: [64,128]
+rec_layers_setting: [128,64]
+sketch_embed_type: 'linear'
+model_type: 'albert'
+embed_pool_type: 'sum'
+attention_norm_type: 'LN'
+inter_activation: 'gelu'
+attention_dropout_prob: 0
+hidden_dropout_prob: 0
+output_dropout_prob: 0
+gamma: 0.1
+grad_clip_value: 1.0
+
+# Losses weights
+mask_gmm_weight: 1
+mask_l1_weight: 1
+mask_type_weight: 1
+kl_weight: 0.1
+kl_weight_start: 0.1
+kl_decay_rate: 0.999995
+kl_tolerance: 0.

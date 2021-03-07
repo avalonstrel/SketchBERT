@@ -1,0 +1,105 @@
+trainer: sketch_transformer_sbir
+# Training Setting
+batch_size: 20
+num_iterations: 2000000 # 0.3*
+num_epoch: 200
+learning_rate: 0.0001
+gpu_ids: [2]
+task_types: ['sbir', 'sbir_cls'] # maskrec, maskgmm, maskdisc, sketchcls, sketchclsinput, sketchretrieval, sbir
+get_type: 'triplet'
+mask_task_type: 'task'
+
+load_pretrained: 'pretrained' #[scratch,continue pretrained]
+which_pretrained: ['sketch_enc_net','image_enc_net','task_net'] #enc_opt , 'image_enc_net','task_net'
+restore_checkpoint_path: '/home/lhy/Project/LinGANs/model_logs/sketch_transformer_sbir/201911081938_sketch_albert_qd_data_100x1000_struct_8_12_768_full_pretrained_sbir_tri_cls_max_scale/latest_ckpt.pth.tar'
+#model_logs/sketch_transformer_sbir/201911081302_sketch_albert_tub_data_248x5000_struct_8_12_768_full_pretrained_sbir_max_scale/best_ckpt.pth.tar
+#/home/lhy/Project/LinGANs/model_logs/sketch_transformer_sbir/201911061810_sketch_albert_qd_data_100x5000_struct_8_12_768_full_pretrained_sbir_only_cls_max_scale/iter_40000_ckpt.pth.tar
+#model_logs/sketch_transformer_sbir/201911081938_sketch_albert_qd_data_100x1000_struct_8_12_768_full_pretrained_sbir_tri_cls_max_scale/latest_ckpt.pth.tar
+
+# model_logs/sketch_transformer/201911041046_sketch_albert_tub_data_345x100000_struct_8_12_768_full_pretrained_cls_max_scale/
+# model_logs/sketch_transformer_sbir/201911061810_sketch_albert_qd_data_100x5000_struct_8_12_768_full_pretrained_sbir_only_cls_max_scale/
+# model_logs/sketch_transformer/201911031549_sketch_albert_sketchy_data_345x100000_struct_8_12_768_partial_pretrained_mask_max_scale/
+# model_logs/sketch_transformer/201911031540_sketch_albert_tub_data_345x100000_struct_8_12_768_partial_pretrained_mask_max_scale/
+# model_logs/sketch_transformer/201911031540_sketch_albert_tub_data_345x100000_struct_8_12_768_partial_pretrained_mask_max_scale/ 201911041046_sketch_albert_tub_data_345x100000_struct_8_12_768_full_pretrained_cls_max_scale
+# '/home/lhy/Project/LinGANs/model_logs/v100/model_logs/sketch_transformer/201910210611_sketch_albert_data_345x100000_struct_12_8_256_mask/latest_ckpt.pth.tar'
+
+dataset: 'quickdraw_sbir' #quickdraw_sbir, quickdraw_memmap
+num_train_samples: 20000000
+num_val_samples: 10
+num_display_samples: 5
+shuffle_val: True
+loader_num_workers: 4
+sum_path: '/home/lhy/datasets/QuickDraw/sbir_sketch_sum.txt'
+image_sum_path: '/home/lhy/datasets/QuickDraw/sbir_image_sum.txt'
+offset_path: '/home/lhy/datasets/QuickDraw/offsets.npz'
+cls_limit_path: ''
+mode: 'train'
+max_length: 250
+max_size: [128,128]
+image_size: 224
+type_size: 3
+mask_prob: 1
+limit: 1000
+stroke_type: 'stroke-5'
+input_is_complete: False
+max_cls_cache: 100
+normalization_type: 'max_scale'
+max_scale_factor: 10
+each_max_samples: 1000
+each_image_max_samples: 1000
+each_val_samples: 10
+
+# Output and Save options
+print_every:  100
+log_dir: 'sketch_albert_qd_data_100x1000_struct_8_12_768_full_pretrained_sbir_tri_cls_max_scale'
+# model_logs/sketch_transformer/201909120123_sketch_transformer_pretrained_3180000_ori_sketchclsinput_task_var_norm_pos_learn/latest_ckpt.pth.tar
+
+checkpoint_every: 1000
+save_model_every: 20000
+
+# Transformer settings
+encoder_type: 'Ori'
+image_net_type: 'resnet50'
+cnn_pretrained: True
+layers_setting: [[12, 768, 3072],[12, 768, 3072],[12, 768, 3072],[12, 768, 3072],[12, 768, 3072],[12, 768, 3072],[12, 768, 3072],[12, 768, 3072]]
+# 6 layer width attention [[8, 256, 1024],[8, 256, 1024],[8, 256, 1024],[8, 256, 1024],[8, 256, 1024],[8, 256, 1024]]
+# small small 6 layer (num_heads, hidden_dim, inter_dim=4*hidden_size) 6-64-256 : [[6, 72, 288],[6, 72,288],[6, 72,288],[6, 72,288],[6, 72,288],[6, 72,288],[6, 72,288],[6, 72,288]]
+# small 8 layer (num_heads, hidden_dim, inter_dim=4*hidden_size) 8-128-512 : [[8, 128, 512],[8, 128, 512],[8, 128, 512],[8, 128, 512],[8, 128, 512],[8, 128, 512],[8, 128, 512],[8, 128, 512]]
+# BERT Base 12 layer 12-768-3072: [[12, 768, 3072],[12, 768, 3072],[12, 768, 3072],[12, 768, 3072],[12, 768, 3072],[12, 768, 3072],[12, 768, 3072],[12, 768, 3072],[12, 768, 3072],[12, 768, 3072],[12, 768, 3072],[12, 768, 3072]]
+# Large 16 layer 16-1024-4096: [[16, 1024, 4096],[16, 1024, 4096],[16, 1024, 4096],[16, 1024, 4096],[16, 1024, 4096],[16, 1024, 4096],[16, 1024, 4096],[16, 1024, 4096],[16, 1024, 4096],[16, 1024, 4096],[16, 1024, 4096],[16, 1024, 4096],[16, 1024, 4096],[16, 1024, 4096],[16, 1024, 4096],[16, 1024, 4096]]
+
+output_attentions: False
+output_all_states: False
+keep_multihead_output: False
+input_dim: 5
+cls_dim: 100
+latent_dim: 256
+rel_feat_dim: 128
+M: 16
+embed_layers_setting: [128,256,512] #[64,128],[128,256,512]
+rel_layers_setting: []
+cls_layers_setting: []
+rec_layers_setting: [512,256,128] #[128,64],[512,256,128]
+sketch_embed_type: 'linear'
+embed_pool_type: 'sum'
+model_type: 'albert'
+position_type: 'learn'
+segment_type: 'none'
+atten_type: 'single' #
+attention_norm_type: 'LN'
+inter_activation: 'gelu'
+attention_dropout_prob: 0
+hidden_dropout_prob: 0
+output_dropout_prob: 0
+triplet_margin: 1.0
+gamma: 0.1
+
+# Losses weights
+mask_gmm_weight: 1
+rec_gmm_weight: 0
+mask_axis_weight: 1
+rec_axis_weight: 0
+mask_type_weight: 1
+rec_type_weight: 0
+prediction_weight: 1
+triplet_weight: 0

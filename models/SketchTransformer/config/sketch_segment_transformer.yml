@@ -1,0 +1,82 @@
+trainer: sketch_segment_transformer
+# Training Setting
+batch_size: 64
+num_iterations: 2000000 # 0.3*
+num_epoch: 200
+learning_rate: 0.001
+gpu_ids: [0]
+task_types: ['maskrec','segorder','sketchclsinput', 'sketchretrieval'] #  'sketchretrieval', 'maskrec', 'segorder', 'sketchretrieval'
+mask_task_type: 'task'
+load_pretrained: 'continue' #[scratch,continue pretrained]
+which_pretrained: ['enc_net'] #enc_opt
+restore_checkpoint_path: '/home/lhy/Project/LinGANs/model_logs/sketch_segment_transformer/201909301535_sketch_segment_transformer_sw_mask_order_cls_ret_task_mask/latest_ckpt.pth.tar'
+# model_logs/sketch_segment_transformer/201909221347_sketch_segment_transformer_sw_cls_task_mask_var_norm_pos_learn/latest_ckpt.pth.tar
+# Dataset setting
+dataset: 'quickdraw_segment' #'quickdraw_segment', 'tuberlin_segment'
+num_train_samples: 20000000
+num_val_samples: 10
+num_display_samples: 5
+shuffle_val: True
+loader_num_workers: 4
+sum_path: '/home/lhy/datasets/QuickDraw/sketchrnn_sum.txt' #'/home/lhy/datasets/QuickDraw/sketchrnn_sum.txt', '/home/lhy/datasets/TUBerlin/tuberlin_sum.txt'
+mode: 'train'
+max_length: 100
+max_segment: 30
+max_size: [128,128]
+type_size: 3
+mask_prob: 0.85 #0.85
+stroke_type: 'stroke-5'
+max_cls_cache: 100
+normalization_type: 'var_scale'
+each_max_samples: 5000
+each_val_samples: 1000
+
+# Output and Save options
+print_every:  100
+log_dir: 'sketch_segment_transformer_sw_mask_order_cls_ret_task_mask'
+    #'sketch_segment_transformer_sw_mask_so_cls_task_mask_var_norm_pos_learn' # long box onlymaskrec_
+checkpoint_every: 5000
+save_model_every: 20000
+restore_from_checkpoint: False
+checkpoint_start_from: None
+
+
+# Transformer settings
+encoder_type: 'Ori'
+layers_setting: [[8, 256, 1024],[8, 256, 1024],[8, 256, 1024],[8, 256, 1024],[8, 256, 1024],[8, 256, 1024]]
+# 6 layer width attention [[8, 256, 1024],[8, 256, 1024],[8, 256, 1024],[8, 256, 1024],[8, 256, 1024],[8, 256, 1024]]
+# small small 6 layer (num_heads, hidden_dim, inter_dim=4*hidden_size) 6-64-256 : [[6, 72, 288],[6, 72,288],[6, 72,288],[6, 72,288],[6, 72,288],[6, 72,288],[6, 72,288],[6, 72,288]]
+# small 8 layer (num_heads, hidden_dim, inter_dim=4*hidden_size) 8-128-512 : [[8, 128, 512],[8, 128, 512],[8, 128, 512],[8, 128, 512],[8, 128, 512],[8, 128, 512],[8, 128, 512],[8, 128, 512]]
+# BERT Base 12 layer 12-768-3072: [[12, 768, 3072],[12, 768, 3072],[12, 768, 3072],[12, 768, 3072],[12, 768, 3072],[12, 768, 3072],[12, 768, 3072],[12, 768, 3072],[12, 768, 3072],[12, 768, 3072],[12, 768, 3072],[12, 768, 3072]]
+# Large 16 layer 16-1024-4096: [[16, 1024, 4096],[16, 1024, 4096],[16, 1024, 4096],[16, 1024, 4096],[16, 1024, 4096],[16, 1024, 4096],[16, 1024, 4096],[16, 1024, 4096],[16, 1024, 4096],[16, 1024, 4096],[16, 1024, 4096],[16, 1024, 4096],[16, 1024, 4096],[16, 1024, 4096],[16, 1024, 4096],[16, 1024, 4096]]
+
+output_attentions: False
+output_all_states: False
+keep_multihead_output: False
+input_dim: 5
+cls_dim: 100
+hidden_dim: 256
+latent_dim: 256
+rel_feat_dim: 128
+M: 16
+segment_atten_type: 'single'
+position_type: 'learn'
+segment_type: 'learn'
+attention_norm_type: 'LN'
+inter_activation: 'gelu'
+attention_dropout_prob: 0.5
+hidden_dropout_prob: 0.5
+output_dropout_prob: 0.5
+triplet_margin: 1.0
+gamma: 0.1
+
+# Losses weights
+segorder_weight: 0.1
+mask_gmm_weight: 0.1
+rec_gmm_weight: 0.01
+mask_axis_weight: 0.1
+rec_axis_weight: 0.1
+mask_type_weight: 0.1
+rec_type_weight: 0.1
+prediction_weight: 0.1
+triplet_weight: 0.1

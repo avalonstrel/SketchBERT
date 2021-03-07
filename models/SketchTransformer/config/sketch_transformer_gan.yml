@@ -1,0 +1,69 @@
+trainer: sketch_transformer_gan
+# Training Setting
+batch_size: 6
+num_iterations: 5000000
+num_epoch: 50
+learning_rate: 0.0001
+gpu_ids: [3]
+task_types: ['maskrec']
+mask_task_type: 'task'
+noise_type: 'single'
+load_pretrained: 'enc'
+restore_checkpoint_path: '/'
+
+# Dataset setting
+dataset: 'quickdraw_simple'
+num_train_samples: 20000000
+num_val_samples: 10
+num_display_samples: 5
+shuffle_val: True
+loader_num_workers: 4
+sum_path: '/home/lhy/datasets/QuickDraw/sketchrnn_sum.txt'
+mode: 'train'
+max_length: 250
+mask_prob: 1
+stroke_type: 'stroke-5'
+normalization_type: 'var_scale'
+max_cls_cache: 100
+each_max_samples: 20000
+each_val_samples: 50
+
+# Output and Save options
+print_every:  100
+log_dir: 'sketch_transformer_gan_masktask' # long box only
+checkpoint_every: 5000
+save_model_every: 20000
+restore_from_checkpoint: False
+checkpoint_start_from: None
+restore_checkpoint_path: ''
+
+
+# Transformer settings
+encoder_type: 'Ori'
+gen_layers_setting: [[8, 128, 512],[8, 128, 512],[8, 128, 512],[8, 128, 512],[8, 128, 512],[8, 128, 512],[8, 128, 512],[8, 128, 512],[8, 128, 512],[8, 128, 512],[8, 128, 512],[8, 128, 512]]
+dis_layers_setting: [[8, 128, 512],[8, 128, 512],[8, 128, 512],[8, 128, 512],[8, 128, 512],[8, 128, 512],[8, 128, 512],[8, 128, 512],[8, 128, 512],[8, 128, 512],[8, 128, 512],[8, 128, 512]]
+output_attentions: False
+output_all_states: False
+keep_multihead_output: False
+input_dim: 5
+noise_dim: 64
+cls_dim: 100
+hidden_dim: 128
+latent_dim: 128
+M: 16
+attention_norm_type: 'LN'
+inter_activation: 'gelu'
+attention_dropout_prob: 0.5
+hidden_dropout_prob: 0.5
+output_dropout_prob: 0.5
+gamma: 0.1
+gen_position_type: 'learn'
+dis_position_type: 'learn'
+# Losses weights
+gan_gen_weight: 1
+gan_dis_weight: 1
+gmm_weight: 0.01
+mask_axis_weight: 1
+mask_type_weight: 1
+kl_weight: 100
+prediction_weight: 1
