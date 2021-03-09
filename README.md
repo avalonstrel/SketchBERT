@@ -1,2 +1,1 @@
-# LinGANs
-A GAN Zoo for my research
+SketchBERT Implementation.
