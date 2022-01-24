@@ -47,7 +47,7 @@ You can choose one of them ['maskrec' 'sketchclsinput', 'sketchretrieval'], 'mas
 
 **load_pretrained: 'scratch' # ['scratch', 'continue', 'pretrained']**
 
-**which_pretrained: ['enc_net'] # ['enc_net', 'enc_opt', 'task_net', 'task_opt'],**
+**which_pretrained: ['enc_net'] # ['enc_net', 'enc_opt', 'task_net', 'task_opt']**
 
 **restore_checkpoint_path: 'qd_8_12_768.pth.tar'**
 
