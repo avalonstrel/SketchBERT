@@ -57,4 +57,4 @@ with open(sum_path, 'r') as rf:
             tmp_memmap.flush()
         load_file['full'].write('{}\t{}\n'.format(os.path.join(save_dir, '{}.dat'.format(cls_name)),tmp_num))
 #
-pkl.dump(offsets, open('/home/lhy/datasets/Sketch/QuickDraw/offsets.npz','wb'))
+pkl.dump(offsets, open('QuickDraw/offsets.npz','wb'))
