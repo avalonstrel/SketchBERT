@@ -1,1 +1,0 @@
-python main.py models/ConditionImageSynthesis/SceneGraph2Image/CycleLayout/config/sg2image_cycle.yml
