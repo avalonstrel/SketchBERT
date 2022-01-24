@@ -15,6 +15,7 @@ Here I will take quickdraw dataset as an example to show how to use the script t
 To use the script `models/SketchTransformer/models/generate_dataset.py`
 You need first generate a txt file with all [npz](https://console.cloud.google.com/storage/browser/quickdraw_dataset/sketchrnn) file path in your server like this,
 
+------
 path/beach.full.npz
 
 path/cat.full.npz
@@ -25,6 +26,7 @@ path/cat.full.npz
 
 path/dog.full.npz
 
+------
 
 And then setting the path information in the pyhton script to generate your dataset of memmap. 
 Our preprocessed dataset will be upload soon. (Before 1/30) 
@@ -37,20 +39,17 @@ The corresponding config file is models/SketchTransformer/config/sketch_transfor
 
 You need to set several parameters to successfully run the code.
 
-... \\
-... \\
-
-task_types: ['maskrec'] # ['maskrec' 'sketchclsinput', 'sketchretrieval']
+------
+**task_types: ['maskrec'] # ['maskrec' 'sketchclsinput', 'sketchretrieval']**
 
 You can choose one of them ['maskrec' 'sketchclsinput', 'sketchretrieval'], 'maskrec' means pre-training, 'sketchclsinput' means classification, 
 'sketchretrieval' means retrieval.
 
-...
-...
+------
 
-load_pretrained: 'scratch' # ['scratch', 'continue', 'pretrained']
+**load_pretrained: 'scratch' # ['scratch', 'continue', 'pretrained']
 which_pretrained: ['enc_net'] # ['enc_net', 'enc_opt', 'task_net', 'task_opt'],
-restore_checkpoint_path: 'qd_8_12_768.pth.tar'
+restore_checkpoint_path: 'qd_8_12_768.pth.tar'**
 
 The loading settings, if you want train from scratch just setting 'scratch', if you want continue training from some checkpoint just use 'continue', if you just want to load a pre-trained weight but with other things like optimizer initialized, use 'pretrained'.
 
@@ -58,19 +57,17 @@ which_pretrained is used to setting load which part of the network, 'enc_net' me
 
 restore_checkpoint_path should be the path to pre-trained weight in your server.
 
-...
-...
+------
 
-sum_path: 'QuickDraw/memmap_sum.txt' 
+**sum_path: 'QuickDraw/memmap_sum.txt' 
 image_sum_path: 'QuickDraw/sbir_image_sum.txt'
-offset_path: 'QuickDraw/offsets.npz' #
+offset_path: 'QuickDraw/offsets.npz' #**
 
 This part refers to the dataset information. Just see the instruction in Preparing the Dataset.
 
-...
-...
+------
 
-log_dir: 'sketch_albert_qd_struct_8_12_768_test_mask_max_scale'
+**log_dir: 'sketch_albert_qd_struct_8_12_768_test_mask_max_scale'**
 The save tag for your experiment. Some checkpoints or results will be save in this dir.
 
 ## Training your own model
@@ -79,17 +76,19 @@ Just run `bash scripts/sketch_transformer.sh`
 The corresponding config file is models/SketchTransformer/config/sketch_transformer.yml
 Except for the parameters above, you may want to specify some new structure. Some important parameters are shown below.
 
-max_length: 250
+------
+**max_length: 250**
 The max length of the model, should adjust to your data.
 
-layers_setting: [[12, 768, 3072],...,[12, 768, 3072]] (repeat 8 times)
+**layers_setting: [[12, 768, 3072],...,[12, 768, 3072]] (repeat 8 times)**
 The layer setting for the transformer, you can set the L-A-H inside and define the layer by repeating it.
 
-embed_layers_setting: [128,256,512]
+**embed_layers_setting: [128,256,512]**
 The layer setting for embedding network, just the hidden sizes of fully-connected networks.
 
-rec_layers_setting: [512,256,128]
+**rec_layers_setting: [512,256,128]**
 The layer setting for reconstruction network, just the hidden sizes of fully-connected networks.
 
+------
 ## Acknowledge
 Thanks to the [QuickDraw](https://github.com/googlecreativelab/quickdraw-dataset) Dataset and the [BERT](https://github.com/google-research/bert).
