@@ -1,69 +1,60 @@
+import torch
 import numpy as np
 import os
-import ndjson
-# dirpath = '/home/lhy/datasets/QuickDraw/sketchrnn'
-# out_dirpath = '/home/lhy/datasets/QuickDraw/sketchrnn_single'
-# sum_path = '/home/lhy/datasets/QuickDraw/sketchrnn_sum.txt'
-# # for filename in os.listdir(dirpath):
-# #     if not filename[0] == '.':
-# #         classname = filename[:-4]
-# #         data = np.load(os.path.join(dirpath, filename), encoding='latin1')
-# #
-# #         for split in (data):
-# #             classpath = os.path.join(out_dirpath, classname, split)
-# #             if not os.path.exists(classpath):
-# #                 os.makedirs(classpath)
-# #             for i, item in enumerate(data[split]):
-# #                 np.save(os.path.join(classpath, '{}_{}_{}.npy'.format(classname.replace(' ', '_'), split, i)), item)
-# #     break
-# with open(sum_path, 'w') as wf:
-#     for filename in os.listdir(dirpath):
-#         if (not filename[0] == '.') and 'full' == filename[-8:-4]:
+import pickle as pkl
+import torch
+from PIL import Image
+
+sum_path = 'npz_sum.txt'
+# a file with all npz names in quickdraw, a line with a path.
+modes = ['train', 'valid', 'test']
+offsets = {'train':{}, 'valid':{}, 'test':{}}
+save_dir = 'QuickDraw/memmap' #simple_memmap
+load_file = {'full':open('QuickDraw/memmap_sum.txt','w')}
+max_len = 0
+def get_class(path):
+    return path[path.rfind('/')+1:-4]
+
+with open(sum_path, 'r') as rf:
+    for line in rf:
+        data_path = line.strip().split('\t')[0]
+        # data_path = data_path.replace('/npz/','/npz/') #simple_npz
+        if not os.path.exists(data_path):
+            continue
+        data = np.load(data_path, encoding='latin1',allow_pickle=True)
+        tmp_data = []
+        tmp_num = 0
+        for mode in modes:
+            for sketch in data[mode]:
+                tmp_data.append(sketch)
+            cls_name = get_class(data_path)
+            save_path = os.path.join(save_dir, '{}_{}.dat'.format(cls_name,mode))
+            offsets[mode][cls_name] = []
+            start = 0
+            max_len = 0
+            len_record = []
+            for sketch in tmp_data:
+                if len(sketch.shape) != 2 or sketch.shape[1] != 3:
+                    print(sketch)
+                    continue
+                end = start + sketch.shape[0]
+                len_record.append(sketch.shape[0])
+                #print(sketch.shape)
+                max_len = max(max_len, sketch.shape[0])
+                offsets[mode][cls_name].append((start, end))
+                start = end
+            len_record = np.array(len_record)
+            tmp_num += len(tmp_data)
+            print(mode,'mean:{}, std:{}, max:{}, min:{}'.format( len_record.mean(), len_record.std(), len_record.max(), len_record.min()))
+            max_len = 250
+            print('Num Count: < {} :{}, total:{}'.format(max_len,(len_record < max_len).sum(), len(len_record)))
+            # print(save_path)
+
+            stack_data = np.concatenate(tmp_data, axis=0)
+            print(stack_data.dtype, stack_data)
+            tmp_memmap = np.memmap(save_path, dtype=np.int16, mode='write', shape=stack_data.shape)
+            tmp_memmap[:] = stack_data[:]
+            tmp_memmap.flush()
+        load_file['full'].write('{}\t{}\n'.format(os.path.join(save_dir, '{}.dat'.format(cls_name)),tmp_num))
 #
-#             data = np.load(os.path.join(dirpath, filename), encoding='latin1')
-#             num_train = len(data['train'])
-#             num_valid = len(data['valid'])
-#             num_test = len(data['test'])
-#             wf.write('{}\t{}\t{}\t{}\n'.format(os.path.join(dirpath, filename), num_train, num_valid, num_test))
-# def preprocess(data_item):
-#     sketch = data_item['drawing']
-#     sketch_segement = []
-#     for i in range(len(sketch)):
-#         stroke = sketch[i]
-#         stroke_segment = np.zeros((len(stroke[0]), 3))
-#         stroke_segment[:, 0] = np.array(stroke[0])
-#         stroke_segment[:, 1] = np.array(stroke[1])
-#         stroke_segment[0, 2] = 1
-#         stroke_segment[1:(len(stroke)-1), 2] = 2
-#         stroke_segment[-1, 2] = 3
-#         stroke_segment[:, 2] = stroke_segment[:, 2] + i * 10
-#         sketch_segement.append(stroke_segment)
-#     sketch_segement = np.concatenate(sketch_segement, axis=0)
-#     return sketch_segement
-#
-# dirpath = '/home/lhy/datasets/QuickDraw/raw'
-# out_dirpath = '/home/lhy/datasets/QuickDraw/segment'
-# sum_path = '/home/lhy/datasets/QuickDraw/segment_sum.txt'
-# short_num = 50000
-# train_split = 0.7
-# valid_split = 0.1
-# test_split = 0.2
-# with open(sum_path, 'w') as wf:
-#     for filename in os.listdir(dirpath):
-#         if not filename[0] == '.':
-#             classname = filename[:-7]
-#             print(classname)
-#             data_list = []
-#             with open(os.path.join(dirpath, filename)) as df:
-#                 data = ndjson.load(df)
-#             for j, data_item in enumerate(data):
-#                 if j >= short_num:
-#                     break
-#                 sketch_item = preprocess(data_item)
-#                 data_list.append(sketch_item)
-#             #data_list = np.stack(data_list)
-#             num_train = int(len(data_list) * train_split)
-#             num_val = int(len(data_list) * valid_split)
-#             num_test = len(data_list) - num_train - num_val
-#             wf.write('{}\t{}\t{}\t{}\n'.format(os.path.join(out_dirpath, '{}.npz'.format(classname)), num_train, num_val, num_test))
-#             np.savez(os.path.join(out_dirpath,'{}.npz'.format(classname)), train=data_list[:num_train], val=data_list[num_train:num_train+num_val], test=data_list[num_train+num_val:num_train+num_val+num_test])
+pkl.dump(offsets, open('/home/lhy/datasets/Sketch/QuickDraw/offsets.npz','wb'))
