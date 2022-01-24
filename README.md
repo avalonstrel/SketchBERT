@@ -5,7 +5,7 @@ Hangyu Lin, Yanwei Fu, Xiangyang Xue, Yu-Gang Jiang
 Previous researches of sketches often considered sketches in pixel format and leveraged CNN based models in the sketch understanding. Fundamentally, a sketch is stored as a sequence of data points, a vector format representation, rather than the photo-realistic image of pixels. SketchRNN studied a generative neural representation for sketches of vector format by Long Short Term Memory networks (LSTM). Unfortunately, the representation learned by SketchRNN is primarily for the generation tasks, rather than the other tasks of recognition and retrieval of sketches. To this end and inspired by the recent BERT model , we present a model of learning Sketch Bidirectional Encoder Representation from Transformer (Sketch-BERT). We generalize BERT to sketch domain, with the novel proposed components and pre-training algorithms, including the newly designed sketch embedding networks, and the self-supervised learning of sketch gestalt. Particularly, towards the pre-training task, we present a novel Sketch Gestalt Model (SGM) to help train the Sketch-BERT. Experimentally, we show that the learned representation of Sketch-BERT can help and improve the performance of the downstream tasks of sketch recognition, sketch retrieval, and sketch gestalt.
 
 ## Pre-train Model
-You can get the pretrained model on [Google Drive](https://drive.google.com/file/d/1y6-0RqzdqrExDkHC0BXOzIRUEl_Ei1da/view?usp=sharing)
+You can get the pretrained model on [Google Drive](https://drive.google.com/file/d/1y6-0RqzdqrExDkHC0BXOzIRUEl_Ei1da/view?usp=sharing).
 
 ## Preparing the Dataset
 To efficient loading the datast, I will first change the original dataset into [memmap](https://numpy.org/doc/stable/reference/generated/numpy.memmap.html) format.
@@ -29,8 +29,6 @@ path/dog.full.npz
 ------
 
 And then setting the path information in the pyhton script to generate your dataset of memmap. 
-Our preprocessed dataset will be upload soon. (Before 1/30) 
-
 
 ## Test with pre-trained model
 
