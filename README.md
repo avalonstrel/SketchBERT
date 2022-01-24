@@ -1,5 +1,5 @@
 # Implementation of Sketch-BERT: Learning Sketch Bidirectional Encoder Representation from Transformers by Self-supervised Learning of Sketch Gestalt[https://arxiv.org/abs/2005.09159]
-
+Hangyu Lin, Yanwei Fu, Xiangyang Xue, Yu-Gang Jiang
 ## Abstract
 Previous researches of sketches often considered sketches in pixel format and leveraged CNN based models in the sketch understanding. Fundamentally, a sketch is
 stored as a sequence of data points, a vector format representation, rather than the photo-realistic image of pixels. SketchRNN studied a generative neural representation for sketches of vector format by Long Short Term Memory networks (LSTM). Unfortunately, the representation learned by SketchRNN is primarily for the generation
@@ -15,3 +15,13 @@ BERT. Experimentally, we show that the learned representation
 of Sketch-BERT can help and improve the performance
 of the downstream tasks of sketch recognition, sketch
 retrieval, and sketch gestalt.
+
+## Pre-train Model
+You can get the pretrained model on [Google Drive](https://drive.google.com/file/d/1y6-0RqzdqrExDkHC0BXOzIRUEl_Ei1da/view?usp=sharing)
+
+## Test with pre-trained model
+
+## Training your own model
+
+## Acknowledge
+
