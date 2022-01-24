@@ -9,43 +9,30 @@ task_types: ['maskrec'] # maskrec, maskgmm, maskdisc, sketchcls, sketchclsinput,
 get_type: 'single' # 'single'
 mask_task_type: 'task'
 
-load_pretrained: 'scratch' #[scratch,continue pretrained]
+load_pretrained: 'scratch' # [scratch,continue pretrained]
 which_pretrained: ['enc_net'] #enc_opt
-restore_checkpoint_path: 'model_logs/sketch_transformer/202003081101_sketch_albert_tub_data_250x80_struct_6_12_768_len500_drop05_pretrain_max_scale/latest_ckpt.pth.tar'
-    # model_logs/sketch_transformer/202003072307_sketch_albert_tub_data_250x80_struct_4_16_1024_len500_pretrain_max_scale/best_ckpt.pth.tar
-    #'model_logs/sketch_transformer/202003061646_sketch_albert_tub_data_250x80_struct_4_12_768_len500_pretrain_max_scale/best_ckpt.pth.tar'
-#    'model_logs/sketch_transformer/202003061724_sketch_albert_simple_tub_data_250x80_struct_4_12_768_len500_pretrain_max_scale/best_ckpt.pth.tar'
-#/home/lhy/Project/LinGANs/model_logs/sketch_transformer/202003051635_sketch_albert_tub_data_250x64_struct_4_8_256_mask_max_scale
-    # 'model_logs/sketch_transformer/202002051316_sketch_albert_qd_data_345x70000_struct_8_12_768_sin_position/best_ckpt.pth.tar'
-    #'model_logs/sketch_transformer/202002022307_sketch_albert_qd_data_345x70000_struct_8_12_768_sin_position/latest_ckpt.pth.tar'
-#'/home/lhy/Project/LinGANs/model_logs/sketch_transformer/201911120838_sketch_albert_qd_data_345x5000_struct_8_12_768_len_250_max_scale_10_mask//latest_ckpt.pth.tar'
-#model_logs/sketch_transformer/201911060701_sketch_albert_data_345x100000_struct_8_12_768_len_250_max_scale_full_pretrained_cls/
-# model_logs/sketch_transformer/201911092228_sketch_albert_tub_data_250x64_struct_8_12_768_part_pretrained_mask_max_scale/latest_ckpt.pth.tar
-# model_logs/sketch_transformer/201911031255_sketch_albert_tub_data_345x100000_struct_8_12_768_len_250_max_scale_mask/
-# model_logs/sketch_transformer/201911031539_sketch_albert_tub_data_345x100000_struct_8_12_768_partial_pretrained_mask_var_scale/iter_60000_ckpt.pth.tar
-# model_logs/sketch_transformer/201910282045_sketch_albert_data_345x100000_struct_12_8_256_full_pretrained_ret/
-# '/home/lhy/Project/LinGANs/model_logs/v100/model_logs/sketch_transformer/201910210611_sketch_albert_data_345x100000_struct_12_8_256_mask/latest_ckpt.pth.tar'
+restore_checkpoint_path: 'qd_8_12_768.pth.tar'
 
-dataset: 'tuberlin_memmap' #'quickdraw_memmap' #quickdraw_sbir, quickdraw_memmap tuberlin_memmap
+dataset: 'quickdraw_memmap' #'quickdraw_memmap' #quickdraw_sbir, quickdraw_memmap tuberlin_memmap
 num_train_samples: 20000000
 num_val_samples: 10
 num_display_samples: 10
 shuffle_val: False
 loader_num_workers: 4
-sum_path:  '/home/lhy/datasets/Sketch/TUBerlin/memmap_sum.txt' #'/home/lhy/datasets/QuickDraw/memmap_sum.txt' #
-image_sum_path: '/home/lhy/datasets/QuickDraw/sbir_image_sum.txt'
-offset_path: '/home/lhy/datasets/Sketch/TUBerlin/offsets.npz' #'/home/lhy/datasets/QuickDraw/offsets.npz' #
+sum_path: 'QuickDraw/memmap_sum.txt' 
+image_sum_path: 'QuickDraw/sbir_image_sum.txt'
+offset_path: 'QuickDraw/offsets.npz' #
 cls_limit_path: ''
 mode: 'train'
-max_length: 500
-max_size: [128,128]
+max_length: 250
+max_size: [128, 128]
 image_size: 224
 type_size: 3
 mask_prob: 0.85 #0.85
 limit: 1000
 stroke_type: 'stroke-5'
 input_is_complete: False
-max_cls_cache: 250 # quickdraw 345 tuberlin
+max_cls_cache: 345 # quickdraw 345 tuberlin
 normalization_type: 'max_scale'
 max_scale_factor: 10
 each_max_samples: 5000
@@ -54,33 +41,20 @@ each_val_samples: 1000
 
 # Output and Save options
 print_every:  100
-log_dir: 'sketch_albert_tub_data_250x80_struct_12_12_768_len500_drop05_pre_max_scale'
-    #'sketch_albert_tub_data_len400_250x64_struct_6_8_256_pre_cls_max_scale'
-    #'sketch_albert_tub_data_250x64_struct_4_8_256_pre_cls_max_scale'
-#    'sketch_albert_ok_qd_struct_8_12_768_test_all0_mask_07_iter_20000_max_scale'
-#'sketch_albert_tub_data_250x64_struct_8_12_768_part_pretrained_cls_max_scale'
-#'sketch_albert_qd_struct_8_12_768_test_mask_max_scale'
-# model_logs/sketch_transformer/201909120123_sketch_transformer_pretrained_3180000_ori_sketchclsinput_task_var_norm_pos_learn/latest_ckpt.pth.tar
+log_dir: 'sketch_albert_qd_struct_8_12_768_test_mask_max_scale'
 
 checkpoint_every: 2000
 save_model_every: 20000
 
 # Transformer settings
 encoder_type: 'Ori'
-layers_setting: [[12, 768, 3072],[12, 768, 3072],[12, 768, 3072],[12, 768, 3072],[12, 768, 3072],[12, 768, 3072],[12, 768, 3072],[12, 768, 3072],[12, 768, 3072],[12, 768, 3072],[12, 768, 3072],[12, 768, 3072]]
-# [12, 768, 3072],[12, 768, 3072],[12, 768, 3072],[12, 768, 3072],[12, 768, 3072],[12, 768, 3072],[12, 768, 3072],[12, 768, 3072]
-#[,[8, 256, 1024],[8, 256, 1024],[8, 256, 1024],[8, 256, 1024],[8, 256, 1024],[8, 256, 1024],[8, 256, 1024],[8, 256, 1024]]
-# 6 layer width attention [[8, 256, 1024],[8, 256, 1024],[8, 256, 1024],[8, 256, 1024],[8, 256, 1024],[8, 256, 1024]]
-# small small 6 layer (num_heads, hidden_dim, inter_dim=4*hidden_size) 6-64-256 : [[6, 72, 288],[6, 72,288],[6, 72,288],[6, 72,288],[6, 72,288],[6, 72,288],[6, 72,288],[6, 72,288]]
-# small 8 layer (num_heads, hidden_dim, inter_dim=4*hidden_size) 8-128-512 : [[8, 128, 512],[8, 128, 512],[8, 128, 512],[8, 128, 512],[8, 128, 512],[8, 128, 512],[8, 128, 512],[8, 128, 512]]
-# BERT Base 12 layer 12-768-3072: [[12, 768, 3072],[12, 768, 3072],[12, 768, 3072],[12, 768, 3072],[12, 768, 3072],[12, 768, 3072],[12, 768, 3072],[12, 768, 3072],[12, 768, 3072],[12, 768, 3072],[12, 768, 3072],[12, 768, 3072]]
-# Large 16 layer 16-1024-4096: [[16, 1024, 4096],[16, 1024, 4096],[16, 1024, 4096],[16, 1024, 4096],[16, 1024, 4096],[16, 1024, 4096],[16, 1024, 4096],[16, 1024, 4096],[16, 1024, 4096],[16, 1024, 4096],[16, 1024, 4096],[16, 1024, 4096],[16, 1024, 4096],[16, 1024, 4096],[16, 1024, 4096],[16, 1024, 4096]]
+layers_setting: [[12, 768, 3072],[12, 768, 3072],[12, 768, 3072],[12, 768, 3072],[12, 768, 3072],[12, 768, 3072],[12, 768, 3072],[12, 768, 3072]]
 
 output_attentions: False
 output_all_states: False
 keep_multihead_output: False
 input_dim: 5
-cls_dim: 250
+cls_dim: 345
 latent_dim: 128
 rel_feat_dim: 128
 M: 16
