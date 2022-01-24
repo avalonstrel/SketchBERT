@@ -63,7 +63,7 @@ restore_checkpoint_path should be the path to pre-trained weight in your server.
 
 **image_sum_path: 'QuickDraw/sbir_image_sum.txt'**
 
-**offset_path: 'QuickDraw/offsets.npz' **
+**offset_path: 'QuickDraw/offsets.npz'**
 
 This part refers to the dataset information. Just see the instruction in Preparing the Dataset.
 
