@@ -16,10 +16,15 @@ To use the script `models/SketchTransformer/models/generate_dataset.py`
 You need first generate a txt file with all [npz](https://console.cloud.google.com/storage/browser/quickdraw_dataset/sketchrnn) file path in your server like this,
 
 path/beach.full.npz
+
 path/cat.full.npz
+
 ...
+
 ...
+
 path/dog.full.npz
+
 
 And then setting the path information in the pyhton script to generate your dataset of memmap. 
 Our preprocessed dataset will be upload soon. (Before 1/30) 
@@ -27,12 +32,13 @@ Our preprocessed dataset will be upload soon. (Before 1/30)
 
 ## Test with pre-trained model
 
-Just run `bash scripts/test_sketch_transformer.sh` 
+Just run `bash scripts/test_sketch_transformer.sh` .
 The corresponding config file is models/SketchTransformer/config/sketch_transformer.yml
 
 You need to set several parameters to successfully run the code.
-...
-...
+
+... \\
+... \\
 
 task_types: ['maskrec'] # ['maskrec' 'sketchclsinput', 'sketchretrieval']
 
