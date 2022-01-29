@@ -17,11 +17,7 @@ import json, os
 
 from .utils import imagenet_preprocess, imagenet_deprocess
 from .utils import imagenet_deprocess_batch
-from .vg_dataset import VisualGenomeDataset, vg_collate_fn
-from .coco_dataset import CocoSceneGraphDataset, CocoCISDataset, coco_collate_fn
-from .cmplaces_dataset import CMPlacesDataset
 from .quickdraw_dataset import QuickDrawMemMapDataset, QuickDrawSBIRDataset, QuickDrawImageDataset, QuickDrawImageSBIRDataset
-from .sketchy_dataset import SketchyMemMapDataset, SketchySBIRDataset, SketchyImageDataset, SketchyImageSBIRDataset
 from .tuberlin_dataset import TUBerlinMemMapDataset, TUBerlinSBIRDataset, TUBerlinImageDataset, TUBerlinImageSBIRDataset
 from torch.utils.data import Dataset, DataLoader
 
